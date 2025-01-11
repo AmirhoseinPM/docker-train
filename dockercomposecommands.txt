@@ -1,0 +1,63 @@
+#Docker compose work on top of docker engine
+# docker-compose file used to composed multi-container application
+# find docker-compose file version -> https://docs.docker.com/reference/compose-file/
+
+#Clean up work pace
+-----------------------------------------------------
+docker image ls -q  					# list image id
+docker image rm $(docker image ls -q)			# remove all images, make sure there is no container
+docker container rm -f $(docker container ls -aq)	# remove all containers: stopped + running (do before removing images)
+
+
+# compose commands
+-------------------------------------------------------
+docker-compose build --help
+docker-compose build
+docker-compose build --no-cache 	# rebuild completely
+docker images 				# images prefix with name of app or directory
+
+docker-compose up --help
+docker-compose up --build 		# force to rebuild
+docker-compose up -d 			# run in background
+
+
+docker-compose ps			# containers and build command
+
+docker-compose down			# stop containers but images are exists 
+
+docker network ls			# 3 network by default added
+
+docker exec -it -u root containerId sh
+	ping   ---->> see ip address is different ---> manage by docker DNS server
+
+# containers can talk to each other with there name instead of ip address:port
+
+# docker-compose logs
+-------------------------------------------
+docker-compose logs --help
+
+docker-compose logs -f 			# see all logs of all composed container
+
+
+# publish changes
+--------------------------------------------
+add volume related to service files for map to image
+in docker-compose file:
+services:
+	backend:
+		volumes:
+			- ./backend:/app
+
+
+# we can override default command in docker-compose file by "command" property of the service
+
+# search "docker wait for container" --> when we want to start a container after another container completely started
+# for this we use a wait-for script 
+
+
+
+
+# docker pull amazoncorretto:8u432-al2-generic
+
+
+
