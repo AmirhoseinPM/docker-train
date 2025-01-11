@@ -1,0 +1,14 @@
+FROM ...
+RUN addgroup app && adduser -S -G app app
+USER app
+WORKDIR /app
+MKDIR /config-repo       # /app/config-repo
+COPY pom.xml . # این به محتوای دایرکتوری که از اون ران میشه محدوده
+RUN mvn clean install
+COPY . .
+ENV OAUTH_SERVER_PORT=9000
+EXPOSE 9000
+# default cmd when run container
+# CMD ["java", "-jar" "/target/...."]  # executeform  # excute when start container # we can override default cmd when start container
+# CMD java -jar /target/....  # shellform  # excute when start container
+ENTRYPOINT ["java", "-jar" "/target/...."]  # we can not

@@ -1,0 +1,43 @@
+docker build -t react-app .
+docker run -it react-app npm start
+docker run -it react-app
+docker run -it react-app --entrypoint npm start
+
+docker image // see subcommands
+docker images // list images
+
+docker image prune // remove dangle images
+docker image rm imageName/imageId // remove one image
+
+docker build -it react-app:1 // tag image while building it: default tag = latest
+docker image tag react-app:latest/imageid react-app:1 // tag image after build
+
+docker ps // list containers
+docker container ls // list containers
+docker container prune // remove stopped containers
+
+
+
+// share images
+// 1.  create dockerRepo with same name of image -> reponame= username/imagename -> pooyan/react-app
+docker image tag react-app:2 pooyan/react-app:latest
+docker login
+docker push pooyan/react-app:latest
+
+// after any change
+docker build -it react-app:3 .
+docker tag react-app:3 pooyan/react-app:latest
+docker push pooyan/react-app:3
+
+
+// save and load images
+docker image save --help
+docker image save -o react-app.tar reactapp:3
+docker image load --help
+docker image load react-app.tar
+
+
+
+
+
+
