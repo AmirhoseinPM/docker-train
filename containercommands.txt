@@ -1,0 +1,64 @@
+# run containers
+docker ps
+docker ps -a      # see all containers: STOPED
+docker ps -a | grep containerName
+docker run -d react-app      # run container in detached mode(background)
+docker run -d --name blue react-app:3           # run another container in same time with different name
+
+# see log
+docker logs containerId        # see log output of server
+docker logs --help
+docker logs -f containerId       # follow logs
+docker logs -n 10 containerId     # see 10 tail logs
+docker logs -t containerId      # see timestamp
+
+# publishing ports of container to host
+docker ps
+docker run -d -p 80:3000 --name c1 react-app    # hostPort:containerPort
+
+
+# execute commands in running container
+docker exec c1 ls          # execute ls cmd in c1 container
+docker exec c1 sh          # open shell for c1 container
+
+# stop/ start container
+docker stop c1   # stop a RUNNING container
+docker start c1  # start a STOPED container
+
+
+# remove container
+----------------------------
+docker rm c1                   # can not remove running container
+docker stop c1 && docker rm c1
+docker stop -f c1              # ????
+
+# remove all stopped container
+-----------------------------
+docker container prune
+
+
+# persisting data using volume
+--------------------------------------------------------
+docker volume                          # see subcommands
+docker volume create config-repo       # create volume
+docker volume inspect config-repo      # see volume info
+
+docker run -d -p 80:3000 -v config-repo:/app/data react-app       # we dont have to create volume and path but owner be root
+docker exec -it c1 sh
+echo "text" > /app/data/data.txt        # this file exists in mountpoint of config-repo volume 
+
+
+# copy from/to container
+------------------------------------------
+docker cp containerId:path_in_container .                # copy from container to host
+docker cp ./secret.txt containerId:path_to_container     # copy from host to container
+
+
+
+
+# publishing changes
+# for production -> create new image -> tag -> deploy
+# for development -> Share source code with container
+# map project dir to container -> every change apply to container
+
+docker run -d -p 80:3000  -v $(pwd):/app/ -v config-repo:/app/data    
